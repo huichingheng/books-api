@@ -1,7 +1,7 @@
 const app = require("./app");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/jumpstart");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/jumpstart");
 const db = mongoose.connection;
 db.on("error", error => {
   console.error("An error occurred!", error);
