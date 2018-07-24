@@ -3,22 +3,33 @@ const router = express.Router();
 const Book = require("../models/book");
 const mongoose = require("mongoose");
 
+//error handler express
+const asyncWapper = asyncMiddleware => {
+  return async (req, res, next) => {
+    try {
+      await asyncMiddleware(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
 /* GET books listing. */
-router.get("/", async (req, res, next) => {
-  try {
+router.get(
+  "/",
+  asyncWapper(async (req, res, next) => {
     const books = await Book.find().populate("author");
     res.json(books);
-  } catch (error) {
-    next(error);
-  }
-});
+  })
+);
 
 router.get("/:id", (req, res, next) => {
   res.json({ message: `get book with id ${req.params.id}` });
 });
 
-router.post("/", async (req, res, next) => {
-  try {
+router.post(
+  "/",
+  asyncWapper(async (req, res, next) => {
     const newBook = new Book({
       title: req.body.title,
       author: req.body.author
@@ -27,10 +38,8 @@ router.post("/", async (req, res, next) => {
     await newBook.save();
 
     res.status(201).json({ message: `created a new book successfully` });
-  } catch (error) {
-    next(error);
-  }
-});
+  })
+);
 
 router.put("/:id", (req, res, next) => {
   res.json({ message: `update book with id ${req.params.id}` });
