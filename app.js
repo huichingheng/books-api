@@ -8,8 +8,7 @@ const authors = require("./routes/authors.js");
 
 if (process.env.NODE_ENV === "production") {
   app.use(
-    cors({
-      origin: process.env.ALLOWED_ORIGIN
+    cors({origin: process.env.ALLOWED_ORIGIN
     })
   );
 }
