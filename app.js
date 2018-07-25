@@ -6,14 +6,18 @@ const index = require("./routes/index");
 const books = require("./routes/books.js");
 const authors = require("./routes/authors.js");
 
+const app = express();
+
 if (process.env.NODE_ENV === "production") {
   app.use(
-    cors({origin: process.env.ALLOWED_ORIGIN
+    cors({
+      origin: process.env.ALLOWED_ORIGIN
     })
   );
+} else {
+  app.use(cors());
 }
 
-const app = express();
 app.use(logger("dev"));
 app.use(express.json());
 
